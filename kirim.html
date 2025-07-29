@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vista App - Kirim Uang</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e5e7eb;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            background-color: #f9fafb;
+            margin: 0 auto;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .main-content::-webkit-scrollbar { width: 4px; }
+        .main-content::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+        .hidden { display: none; }
+
+        .tab-active {
+            border-bottom-color: #4f46e5; /* indigo-600 */
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        .tab-inactive {
+            border-bottom-color: transparent;
+            color: #6b7280; /* gray-500 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Halaman 1: Pilih Penerima -->
+        <div id="page-select-recipient" class="flex flex-col h-full">
+            <!-- Top Header -->
+            <header class="flex-shrink-0 bg-white shadow-sm z-10">
+                <div class="px-4 py-3 flex items-center space-x-3">
+                    <button class="p-2 text-gray-600 hover:text-indigo-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                    </button>
+                    <h1 class="text-xl font-bold text-gray-800">Kirim Uang</h1>
+                </div>
+                 <!-- Tabs -->
+                <div class="flex border-b border-gray-200">
+                    <button id="tab-vista" class="tab-btn flex-1 py-3 text-sm border-b-2 tab-active">Kontak Vista</button>
+                    <button id="tab-bank" class="tab-btn flex-1 py-3 text-sm border-b-2 tab-inactive">Rekening Bank</button>
+                    <button id="tab-ewallet" class="tab-btn flex-1 py-3 text-sm border-b-2 tab-inactive">E-Wallet</button>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <!-- Vista Contacts Content -->
+                <div id="content-vista" class="p-4 space-y-4">
+                    <a href="#" class="recipient-item flex items-center space-x-4 p-2 rounded-lg hover:bg-gray-100" data-type="vista" data-name="Andi Hermawan" data-detail="081234567890" data-avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop">
+                        <img class="w-12 h-12 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop" alt="Avatar">
+                        <p class="font-semibold text-gray-800">Andi Hermawan</p>
+                    </a>
+                </div>
+                <!-- Bank Account Content -->
+                <div id="content-bank" class="hidden p-4 space-y-4">
+                    <button class="w-full flex items-center justify-center py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 hover:border-indigo-500 hover:text-indigo-600 transition-colors">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        Tambah Rekening Baru
+                    </button>
+                    <a href="#" class="recipient-item flex items-center space-x-4 p-3 rounded-lg bg-white shadow-sm hover:bg-gray-50" data-type="bank" data-name="Budi Santoso" data-detail="BCA • 1234567890" data-avatar="https://placehold.co/100x100/FFFFFF/00529C?text=BCA&font=sans-serif">
+                        <img class="w-12 h-12 rounded-full object-contain p-1 border" src="https://placehold.co/100x100/FFFFFF/00529C?text=BCA&font=sans-serif" alt="Logo BCA">
+                        <div>
+                            <p class="font-semibold text-gray-800">Budi Santoso</p>
+                            <p class="text-sm text-gray-500">BCA • 1234567890</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- E-Wallet Content -->
+                <div id="content-ewallet" class="hidden p-4 space-y-4">
+                    <button class="w-full flex items-center justify-center py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 hover:border-indigo-500 hover:text-indigo-600 transition-colors">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        Tambah E-Wallet Baru
+                    </button>
+                    <div class="space-y-2">
+                        <a href="#" class="recipient-item flex items-center space-x-4 p-3 rounded-lg bg-white shadow-sm hover:bg-gray-50" data-type="ewallet" data-name="Andi Hermawan" data-detail="Gopay • 081234567890" data-avatar="https://placehold.co/100x100/FFFFFF/00880D?text=Gopay&font=sans-serif">
+                            <img class="w-12 h-12 rounded-full object-contain p-1 border" src="https://placehold.co/100x100/FFFFFF/00880D?text=Gopay&font=sans-serif" alt="Logo Gopay">
+                            <div><p class="font-semibold text-gray-800">Andi Hermawan</p><p class="text-sm text-gray-500">Gopay • 081234567890</p></div>
+                        </a>
+                        <a href="#" class="recipient-item flex items-center space-x-4 p-3 rounded-lg bg-white shadow-sm hover:bg-gray-50" data-type="ewallet" data-name="Citra Lestari" data-detail="OVO • 081234567891" data-avatar="https://placehold.co/100x100/FFFFFF/4D2A86?text=OVO&font=sans-serif">
+                            <img class="w-12 h-12 rounded-full object-contain p-1 border" src="https://placehold.co/100x100/FFFFFF/4D2A86?text=OVO&font=sans-serif" alt="Logo OVO">
+                            <div><p class="font-semibold text-gray-800">Citra Lestari</p><p class="text-sm text-gray-500">OVO • 081234567891</p></div>
+                        </a>
+                        <a href="#" class="recipient-item flex items-center space-x-4 p-3 rounded-lg bg-white shadow-sm hover:bg-gray-50" data-type="ewallet" data-name="Budi Santoso" data-detail="DANA • 081234567892" data-avatar="https://placehold.co/100x100/FFFFFF/108EE9?text=DANA&font=sans-serif">
+                            <img class="w-12 h-12 rounded-full object-contain p-1 border" src="https://placehold.co/100x100/FFFFFF/108EE9?text=DANA&font=sans-serif" alt="Logo DANA">
+                            <div><p class="font-semibold text-gray-800">Budi Santoso</p><p class="text-sm text-gray-500">DANA • 081234567892</p></div>
+                        </a>
+                         <a href="#" class="recipient-item flex items-center space-x-4 p-3 rounded-lg bg-white shadow-sm hover:bg-gray-50" data-type="ewallet" data-name="Dewi Anggraini" data-detail="ShopeePay • 081234567893" data-avatar="https://placehold.co/100x100/FFFFFF/EE4D2D?text=ShopeePay&font=sans-serif">
+                            <img class="w-12 h-12 rounded-full object-contain p-1 border" src="https://placehold.co/100x100/FFFFFF/EE4D2D?text=ShopeePay&font=sans-serif" alt="Logo ShopeePay">
+                            <div><p class="font-semibold text-gray-800">Dewi Anggraini</p><p class="text-sm text-gray-500">ShopeePay • 081234567893</p></div>
+                        </a>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Bottom Navigation Bar -->
+            <nav class="flex-shrink-0 bg-white border-t border-gray-200 z-10">
+                <div class="flex justify-around items-center h-16">
+                <a href="chat.html" class="nav-link flex flex-col items-center justify-center w-full text-indigo-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg><span class="text-xs font-semibold">Obrolan</span></a>
+                <a href="plan.html" class="nav-link flex flex-col items-center justify-center w-full text-gray-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><span class="text-xs font-medium">Rencana</span></a>
+                <a href="wallet.html" class="nav-link flex flex-col items-center justify-center w-full text-gray-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg><span class="text-xs font-medium">Dompet</span></a>
+                <a href="profile.html" class="nav-link flex flex-col items-center justify-center w-full text-gray-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg><span class="text-xs font-medium">Saya</span></a></div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Halaman 2: Konfirmasi Kirim -->
+        <div id="page-confirm-send" class="hidden absolute inset-0 bg-white flex flex-col z-20">
+            <header class="flex-shrink-0 bg-white px-4 py-3 shadow-sm z-10 flex items-center space-x-3">
+                <button id="back-to-contacts" class="p-2 text-gray-600 hover:text-indigo-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                </button>
+                <h1 class="text-xl font-bold text-gray-800">Kirim ke <span id="recipient-name-header"></span></h1>
+            </header>
+            <main class="flex-1 p-6 flex flex-col items-center text-center bg-gray-50">
+                <img id="recipient-avatar" src="" class="w-20 h-20 rounded-full object-cover mb-4 border">
+                <p id="recipient-name" class="text-lg font-bold text-gray-800"></p>
+                <p id="recipient-detail" class="text-sm text-gray-500 mb-8"></p>
+                
+                <div class="w-full">
+                    <label for="send-amount" class="block text-sm font-medium text-gray-700 mb-2">Jumlah</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500 text-2xl font-semibold">Rp</span>
+                        <input type="text" id="send-amount" inputmode="numeric" placeholder="0" class="w-full text-center text-4xl font-bold pl-12 pr-4 py-3 border-none bg-transparent focus:outline-none focus:ring-0">
+                    </div>
+                </div>
+            </main>
+            <footer class="flex-shrink-0 bg-white p-4 border-t border-gray-200">
+                <button class="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold shadow-md hover:bg-indigo-700">Kirim</button>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Page containers
+            const pageSelectRecipient = document.getElementById('page-select-recipient');
+            const pageConfirmSend = document.getElementById('page-confirm-send');
+            
+            // Tab elements
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const contentPanels = {
+                vista: document.getElementById('content-vista'),
+                bank: document.getElementById('content-bank'),
+                ewallet: document.getElementById('content-ewallet')
+            };
+            
+            // Recipient selection
+            const recipientItems = document.querySelectorAll('.recipient-item');
+            const backToContactsBtn = document.getElementById('back-to-contacts');
+            
+            // Confirmation page elements
+            const recipientNameHeader = document.getElementById('recipient-name-header');
+            const recipientAvatar = document.getElementById('recipient-avatar');
+            const recipientName = document.getElementById('recipient-name');
+            const recipientDetail = document.getElementById('recipient-detail');
+            const sendAmountInput = document.getElementById('send-amount');
+
+            // --- Tab Logic ---
+            const switchTab = (targetTabId) => {
+                tabButtons.forEach(button => {
+                    const isTarget = `tab-${targetTabId}` === button.id;
+                    button.classList.toggle('tab-active', isTarget);
+                    button.classList.toggle('tab-inactive', !isTarget);
+                });
+                Object.values(contentPanels).forEach(panel => {
+                    panel.classList.toggle('hidden', panel.id !== `content-${targetTabId}`);
+                });
+            };
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTabId = button.id.replace('tab-', '');
+                    switchTab(targetTabId);
+                });
+            });
+
+            // --- Page Navigation Logic ---
+            const showConfirmPage = (recipientEl) => {
+                const name = recipientEl.dataset.name;
+                const detail = recipientEl.dataset.detail;
+                const avatar = recipientEl.dataset.avatar;
+                const type = recipientEl.dataset.type;
+
+                recipientNameHeader.textContent = name.split(' ')[0];
+                recipientAvatar.src = avatar;
+                recipientName.textContent = name;
+                recipientDetail.textContent = detail;
+                
+                recipientAvatar.classList.toggle('object-contain', type !== 'vista');
+                recipientAvatar.classList.toggle('p-1', type !== 'vista');
+                recipientAvatar.classList.toggle('object-cover', type === 'vista');
+
+                pageSelectRecipient.classList.add('hidden');
+                pageConfirmSend.classList.remove('hidden');
+            };
+
+            const showSelectPage = () => {
+                pageConfirmSend.classList.add('hidden');
+                pageSelectRecipient.classList.remove('hidden');
+                sendAmountInput.value = '';
+            };
+            
+            recipientItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showConfirmPage(item);
+                });
+            });
+
+            backToContactsBtn.addEventListener('click', showSelectPage);
+
+            // --- Currency Formatting ---
+            const formatCurrency = (value) => {
+                if (!value) return '';
+                const numericValue = parseInt(value.toString().replace(/[^0-9]/g, ''), 10);
+                if (isNaN(numericValue)) return '';
+                return new Intl.NumberFormat('id-ID').format(numericValue);
+            };
+            sendAmountInput.addEventListener('keyup', (e) => {
+                e.target.value = formatCurrency(e.target.value);
+            });
+            
+            // Initial state
+            switchTab('vista');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vista App - Meet</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            background-color: #1f2937;
+            margin: 0 auto;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .hidden { display: none; }
+        .text-shadow { text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+        .tab-active { border-bottom-color: #4f46e5; color: #4f46e5; font-weight: 600; }
+        .tab-inactive { border-bottom-color: transparent; color: #6b7280; }
+        /* Custom toggle switch */
+        .toggle-checkbox:checked { right: 0; border-color: #4f46e5; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #4f46e5; }
+    </style>
+</head>
+<body>
+
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="absolute top-0 left-0 right-0 p-4 z-20 flex justify-between items-center">
+            <div class="bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full text-white text-sm font-semibold">
+                Sisa Waktu: <span id="meet-timer">29:59</span>
+            </div>
+            <button id="end-call-btn" class="bg-red-500 text-white px-4 py-2 rounded-full font-semibold text-sm hover:bg-red-600">Akhiri</button>
+        </header>
+
+        <!-- Main Video Content -->
+        <main class="flex-1 relative">
+            <img id="main-video-bg" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover transition-all duration-500" alt="Video Peserta Utama">
+            <div class="absolute bottom-24 right-4 w-24 h-36 bg-gray-700 rounded-xl overflow-hidden shadow-lg border-2 border-white/50">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop" class="w-full h-full object-cover" alt="Video Anda">
+            </div>
+            <div class="absolute bottom-24 left-4 text-white text-shadow"><p class="font-semibold">Citra Lestari</p></div>
+        </main>
+
+        <!-- Bottom Controls Wrapper -->
+        <div class="absolute bottom-0 left-0 right-0 z-20">
+            <div id="more-options-menu" class="hidden p-4 bg-gray-800/80 backdrop-blur-sm rounded-t-2xl transition-all duration-300">
+                <div class="grid grid-cols-3 gap-4 text-white text-xs text-center">
+                    <button class="flex flex-col items-center space-y-1"><div class="p-3 bg-white/10 rounded-full"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg></div><span>Bisukan</span></button>
+                    <button class="flex flex-col items-center space-y-1"><div class="p-3 bg-white/10 rounded-full"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></div><span>Kamera</span></button>
+                    <button class="flex flex-col items-center space-y-1"><div class="p-3 bg-white/10 rounded-full"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></div><span>Rekam</span></button>
+                    <button id="participants-btn-menu" class="flex flex-col items-center space-y-1"><div class="p-3 bg-white/10 rounded-full"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div><span>Peserta</span></button>
+                    <button id="share-btn" class="flex flex-col items-center space-y-1"><div class="p-3 bg-white/10 rounded-full"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342A8 8 0 0112 11c1.885 0 3.63.56 5.036 1.515m-9.07 1.428A8 8 0 0112 13c1.885 0 3.63.56 5.036 1.515M12 6a3 3 0 110 6 3 3 0 010-6z"></path></svg></div><span>Bagikan</span></button>
+                    <button id="settings-btn" class="flex flex-col items-center space-y-1"><div class="p-3 bg-white/10 rounded-full"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.096 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div><span>Pengaturan</span></button>
+                </div>
+            </div>
+            <footer class="flex-shrink-0 bg-gray-800/80 backdrop-blur-sm p-4"><div class="flex items-center justify-between text-white"><button id="chat-btn" class="p-3" title="Chat"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button><button class="p-4 bg-indigo-600 rounded-full" title="Share Screen"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></button><button id="more-options-btn" class="p-3" title="Opsi Lainnya"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path></svg></button></div></footer>
+        </div>
+
+        <!-- Side Panel for Participants & Chat -->
+        <div id="side-panel" class="absolute top-0 right-0 h-full w-full max-w-xs bg-white z-30 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col"><header class="p-4 border-b flex items-center"><div class="flex border-b border-gray-200 w-full"><button id="tab-participants" class="flex-1 py-2 text-sm border-b-2">Peserta (3)</button><button id="tab-chat" class="flex-1 py-2 text-sm border-b-2">Chat</button></div><button id="close-panel-btn" class="p-2 -mr-2 ml-2"><svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></header><div id="content-participants" class="flex-1 p-4 space-y-4 overflow-y-auto"><div class="flex items-center justify-between"><div class="flex items-center space-x-3"><img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop" class="w-10 h-10 rounded-full object-cover"><div><p class="font-semibold">Anda</p></div></div></div><div class="flex items-center justify-between"><div class="flex items-center space-x-3"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" class="w-10 h-10 rounded-full object-cover"><div><p class="font-semibold">Citra Lestari</p></div></div><button class="p-2 text-gray-500 hover:text-indigo-600" title="Pin Peserta"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></button></div><div class="flex items-center justify-between"><div class="flex items-center space-x-3"><img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=1780&auto=format&fit=crop" class="w-10 h-10 rounded-full object-cover"><div><p class="font-semibold">Budi Santoso</p></div></div><button class="p-2 text-gray-500 hover:text-indigo-600" title="Pin Peserta"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></button></div></div><div id="content-chat" class="hidden flex-1 flex flex-col"><div class="flex-1 p-4 space-y-4 overflow-y-auto"><div class="flex items-start space-x-2"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" class="w-8 h-8 rounded-full"><div class="bg-gray-100 p-3 rounded-lg rounded-tl-none"><p class="text-sm font-semibold">Citra</p><p class="text-sm">Halo semua!</p></div></div></div><div class="p-2 border-t"><input type="text" placeholder="Ketik pesan..." class="w-full bg-gray-100 rounded-full px-4 py-2"></div></div></div>
+        
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="absolute top-0 right-0 h-full w-full max-w-xs bg-white z-30 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col"><header class="p-4 border-b flex justify-between items-center"><h2 class="text-lg font-bold">Pengaturan Rapat</h2><button id="close-settings-panel-btn" class="p-2 -mr-2"><svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></header><div class="flex-1 p-4 space-y-6 overflow-y-auto"><div><h3 class="font-semibold mb-2">Latar Belakang</h3><div class="grid grid-cols-3 gap-2"><button class="bg-gray-200 aspect-video rounded-lg text-sm">Buram</button><button class="bg-cover aspect-video rounded-lg" style="background-image: url('https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?q=80&w=2071&auto=format&fit=crop')"></button><button class="bg-cover aspect-video rounded-lg" style="background-image: url('https://images.unsplash.com/photo-1568605117036-5fe5e7185743?q=80&w=2070&auto=format&fit=crop')"></button></div></div><div><h3 class="font-semibold mb-2">Audio & Suara</h3><div class="p-3 bg-gray-50 rounded-lg flex justify-between items-center"><span class="font-medium text-sm">Peredam Kebisingan</span><div class="relative inline-block w-10 align-middle select-none"><input type="checkbox" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/><label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label></div></div></div></div></div>
+        
+        <!-- Share Modal -->
+        <div id="share-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 space-y-4"><h2 class="text-xl font-bold text-gray-800 text-center">Bagikan Undangan</h2><p class="text-sm text-center text-gray-600">Bagikan detail ini agar orang lain dapat bergabung ke rapat Anda.</p><div class="space-y-3"><div class="flex items-center justify-between"><span class="text-sm text-gray-500">Link Rapat</span><button class="copy-btn text-sm font-semibold text-indigo-600" data-text="vista.app/meet/xyz-abc-123">Salin</button></div><div class="flex items-center justify-between"><span class="text-sm text-gray-500">Kode Meet</span><button class="copy-btn text-sm font-semibold text-indigo-600" data-text="xyz-abc-123">Salin</button></div><div class="flex items-center justify-between"><span class="text-sm text-gray-500">Password</span><button class="copy-btn text-sm font-semibold text-indigo-600" data-text="987654">Salin</button></div></div><button id="close-share-modal" class="mt-4 w-full py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold">Tutup</button></div></div>
+        
+        <!-- End Call Modal -->
+        <div id="end-call-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 text-center"><h2 class="text-xl font-bold text-gray-800">Akhiri Panggilan?</h2><p class="text-gray-600 mt-2">Apakah Anda yakin ingin mengakhiri panggilan ini?</p><div class="flex space-x-4 mt-6"><button id="cancel-end-call-btn" class="w-full py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold">Batal</button><a href="profile.html"><button id="confirm-end-call-btn" class="w-full py-3 bg-red-500 text-white rounded-lg font-semibold">Yakin</button></a></div></div></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- UI ELEMENTS ---
+            const timerEl = document.getElementById('meet-timer');
+            const moreOptionsBtn = document.getElementById('more-options-btn');
+            const moreOptionsMenu = document.getElementById('more-options-menu');
+            const endCallBtn = document.getElementById('end-call-btn');
+            const endCallModal = document.getElementById('end-call-modal');
+            const cancelEndCallBtn = document.getElementById('cancel-end-call-btn');
+            const sidePanel = document.getElementById('side-panel');
+            const settingsPanel = document.getElementById('settings-panel');
+            const participantsBtnMenu = document.getElementById('participants-btn-menu');
+            const chatBtn = document.getElementById('chat-btn');
+            const settingsBtn = document.getElementById('settings-btn');
+            const closePanelBtn = document.getElementById('close-panel-btn');
+            const closeSettingsPanelBtn = document.getElementById('close-settings-panel-btn');
+            const tabParticipants = document.getElementById('tab-participants');
+            const tabChat = document.getElementById('tab-chat');
+            const contentParticipants = document.getElementById('content-participants');
+            const contentChat = document.getElementById('content-chat');
+            const shareBtn = document.getElementById('share-btn');
+            const shareModal = document.getElementById('share-modal');
+            const closeShareModalBtn = document.getElementById('close-share-modal');
+
+            // --- TIMER LOGIC ---
+            let timeLeft = 30 * 60;
+            setInterval(() => { if (timeLeft > 0) { timeLeft--; const mins = Math.floor(timeLeft / 60).toString().padStart(2, '0'); const secs = (timeLeft % 60).toString().padStart(2, '0'); timerEl.textContent = `${mins}:${secs}`; } }, 1000);
+
+            // --- MODAL & PANEL VISIBILITY LOGIC ---
+            const openModal = (modal) => modal.classList.remove('hidden');
+            const closeModal = (modal) => modal.classList.add('hidden');
+            
+            const openPanel = (panel) => {
+                panel.classList.remove('translate-x-full');
+                moreOptionsMenu.classList.add('hidden');
+            };
+            const closePanel = (panel) => panel.classList.add('translate-x-full');
+
+            // --- EVENT LISTENERS ---
+            moreOptionsBtn.addEventListener('click', (e) => { e.stopPropagation(); moreOptionsMenu.classList.toggle('hidden'); });
+            window.addEventListener('click', (e) => { if (!moreOptionsMenu.classList.contains('hidden') && !moreOptionsMenu.contains(e.target) && !moreOptionsBtn.contains(e.target)) { moreOptionsMenu.classList.add('hidden'); } });
+
+            endCallBtn.addEventListener('click', () => openModal(endCallModal));
+            cancelEndCallBtn.addEventListener('click', () => closeModal(endCallModal));
+            endCallModal.addEventListener('click', (e) => { if(e.target === endCallModal) closeModal(endCallModal); });
+
+            shareBtn.addEventListener('click', () => { openModal(shareModal); moreOptionsMenu.classList.add('hidden'); });
+            closeShareModalBtn.addEventListener('click', () => closeModal(shareModal));
+            shareModal.addEventListener('click', (e) => { if(e.target === shareModal) closeModal(shareModal); });
+
+            settingsBtn.addEventListener('click', () => openPanel(settingsPanel));
+            closeSettingsPanelBtn.addEventListener('click', () => closePanel(settingsPanel));
+
+            const openSidePanel = (activeTab) => {
+                openPanel(sidePanel);
+                if (activeTab === 'chat') {
+                    tabChat.classList.add('tab-active', 'text-indigo-600'); tabChat.classList.remove('tab-inactive', 'text-gray-500');
+                    tabParticipants.classList.add('tab-inactive', 'text-gray-500'); tabParticipants.classList.remove('tab-active', 'text-indigo-600');
+                    contentChat.classList.remove('hidden'); contentParticipants.classList.add('hidden');
+                } else {
+                    tabParticipants.classList.add('tab-active', 'text-indigo-600'); tabParticipants.classList.remove('tab-inactive', 'text-gray-500');
+                    tabChat.classList.add('tab-inactive', 'text-gray-500'); tabChat.classList.remove('tab-active', 'text-indigo-600');
+                    contentParticipants.classList.remove('hidden'); contentChat.classList.add('hidden');
+                }
+            };
+            
+            participantsBtnMenu.addEventListener('click', () => openSidePanel('participants'));
+            chatBtn.addEventListener('click', () => openSidePanel('chat'));
+            closePanelBtn.addEventListener('click', () => closePanel(sidePanel));
+            tabParticipants.addEventListener('click', () => openSidePanel('participants'));
+            tabChat.addEventListener('click', () => openSidePanel('chat'));
+            
+            // --- COPY BUTTON LOGIC ---
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const textToCopy = button.dataset.text;
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textToCopy;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        alert(`"${textToCopy}" berhasil disalin!`);
+                    } catch (err) { console.error('Gagal menyalin: ', err); }
+                    document.body.removeChild(textArea);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

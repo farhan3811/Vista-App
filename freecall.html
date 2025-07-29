@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vista App - Panggilan Suara</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom text shadow for better readability */
+        .text-shadow {
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-gray-800">
+
+    <!-- App Container -->
+    <div class="app-container w-full max-w-md h-screen mx-auto relative overflow-hidden bg-gradient-to-br from-gray-700 via-gray-900 to-black flex flex-col">
+        
+        <!-- Top Bar: Recipient Info & Timer -->
+        <div class="pt-12 pb-6 text-center text-white text-shadow">
+            <h1 class="text-3xl font-bold">Andi Hermawan</h1>
+            <p id="call-status" class="text-lg mt-1">Menghubungkan...</p>
+        </div>
+
+        <!-- Avatar Display -->
+        <div class="flex-grow flex items-center justify-center">
+            <div class="w-40 h-40 rounded-full border-4 border-white/20 p-1">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop" 
+                     class="w-full h-full object-cover rounded-full" 
+                     alt="Avatar penerima">
+            </div>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="pb-12 pt-8 px-6 z-10">
+            <div class="space-y-8">
+                <!-- Top row controls -->
+                <div class="flex items-center justify-around text-white">
+                    <button id="mute-btn" class="flex flex-col items-center space-y-2" title="Bisukan">
+                        <div class="p-4 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors">
+                            <svg id="mic-on-icon" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                            <svg id="mic-off-icon" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5l14 14"></path></svg>
+                        </div>
+                        <span class="text-xs">Bisukan</span>
+                    </button>
+                    <button class="flex flex-col items-center space-y-2" title="Keypad">
+                        <div class="p-4 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        </div>
+                        <span class="text-xs">Keypad</span>
+                    </button>
+                    <button id="speaker-btn" class="flex flex-col items-center space-y-2" title="Speaker">
+                        <div class="p-4 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors">
+                            <svg id="speaker-on-icon" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+                            <svg id="speaker-off-icon" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l4-4m0 0l-4-4m4 4H7"></path></svg>
+                        </div>
+                        <span class="text-xs">Speaker</span>
+                    </button>
+                </div>
+                <!-- Bottom row controls -->
+                <div class="flex items-center justify-around text-white">
+                    <button class="flex flex-col items-center space-y-2" title="Tambah Panggilan">
+                        <div class="p-4 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                        </div>
+                        <span class="text-xs">Tambah</span>
+                    </button>
+                    <a href="chat.html"><button class="p-5 bg-red-500 rounded-full text-white hover:bg-red-600 transition-colors" title="Akhiri Panggilan">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8l2-2m0 0l2 2m-2-2v2.5M20 14v.5a2.5 2.5 0 01-2.5 2.5h-10A2.5 2.5 0 015 14.5V8.5A2.5 2.5 0 017.5 6h2.5m9.5 0l-2-2m0 0l-2 2m2-2v2.5"></path></svg>
+                    </button></a>
+                    <div class="w-16 h-16"></div> <!-- Placeholder for centering -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const callStatus = document.getElementById('call-status');
+            let seconds = 0;
+            let timerInterval;
+
+            // Simulate call connection
+            setTimeout(() => {
+                startTimer();
+            }, 3000); // Connect after 3 seconds
+
+            function startTimer() {
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+                    const secs = (seconds % 60).toString().padStart(2, '0');
+                    callStatus.textContent = `${mins}:${secs}`;
+                }, 1000);
+            }
+
+            // --- Control Button Logic ---
+            const muteBtn = document.getElementById('mute-btn');
+            const micOnIcon = document.getElementById('mic-on-icon');
+            const micOffIcon = document.getElementById('mic-off-icon');
+
+            muteBtn.addEventListener('click', () => {
+                micOnIcon.classList.toggle('hidden');
+                micOffIcon.classList.toggle('hidden');
+                muteBtn.querySelector('div').classList.toggle('bg-white/30');
+            });
+
+            const speakerBtn = document.getElementById('speaker-btn');
+            const speakerOnIcon = document.getElementById('speaker-on-icon');
+            const speakerOffIcon = document.getElementById('speaker-off-icon');
+
+            speakerBtn.addEventListener('click', () => {
+                speakerOnIcon.classList.toggle('hidden');
+                speakerOffIcon.classList.toggle('hidden');
+                speakerBtn.querySelector('div').classList.toggle('bg-white/30');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vista App - Penyimpanan & Data</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e5e7eb;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            background-color: #f9fafb;
+            margin: 0 auto;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .main-content::-webkit-scrollbar { width: 4px; }
+        .main-content::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+        
+        /* Custom toggle switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #4f46e5;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Top Header -->
+        <header class="flex-shrink-0 bg-white px-4 py-3 shadow-sm z-10 flex items-center space-x-3">
+            <a href="setting.html"><button class="p-2 text-gray-600 hover:text-indigo-600">
+                <svg xmlns="http://www.w.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button></a>
+            <h1 class="text-xl font-bold text-gray-800">Penyimpanan & Data</h1>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="space-y-6 p-4 pb-24">
+                <!-- Storage Management Section -->
+                <div>
+                    <div class="bg-white rounded-xl shadow-sm p-4">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-bold text-gray-800">Penggunaan Penyimpanan</h2>
+                            <a href="#" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">Kelola</a>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="font-medium text-gray-700">Total Terpakai</span>
+                                <span class="font-bold text-gray-800">1.8 GB</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 flex overflow-hidden">
+                                <div class="bg-indigo-500 h-3" style="width: 60%" title="Media"></div>
+                                <div class="bg-blue-500 h-3" style="width: 25%" title="Dokumen"></div>
+                                <div class="bg-yellow-500 h-3" style="width: 15%" title="Cache"></div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 text-xs pt-2">
+                                <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-2"></span>Media</div>
+                                <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>Dokumen</div>
+                                <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>Cache</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Usage Section -->
+                <div>
+                    <h2 class="text-sm font-bold text-gray-500 mb-2 px-2">PENGGUNAAN JARINGAN</h2>
+                    <div class="bg-white rounded-xl shadow-sm divide-y divide-gray-100">
+                        <div class="p-4">
+                            <h3 class="font-medium text-gray-700 mb-2">Unduh Otomatis Media</h3>
+                            <p class="text-sm text-gray-500 mb-4">Pilih media yang akan diunduh otomatis saat menggunakan data seluler.</p>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center"><span class="font-medium text-gray-700 text-sm">Foto</span><div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"><input type="checkbox" name="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked/><label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label></div></div>
+                                <div class="flex justify-between items-center"><span class="font-medium text-gray-700 text-sm">Audio</span><div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"><input type="checkbox" name="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/><label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label></div></div>
+                                <div class="flex justify-between items-center"><span class="font-medium text-gray-700 text-sm">Video</span><div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"><input type="checkbox" name="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/><label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label></div></div>
+                                <div class="flex justify-between items-center"><span class="font-medium text-gray-700 text-sm">Dokumen</span><div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"><input type="checkbox" name="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked/><label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label></div></div>
+                            </div>
+                        </div>
+                        <a href="#" class="p-4 flex items-center space-x-4 hover:bg-gray-50"><div class="text-gray-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg></div><span class="font-medium text-gray-700">Penggunaan Data Panggilan</span></a>
+                    </div>
+                </div>
+                
+                <!-- Data Usage Total -->
+                <div>
+                     <div class="bg-white rounded-xl shadow-sm divide-y divide-gray-100">
+                        <div class="p-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-700">Total Penggunaan Data</p>
+                                <p class="text-sm text-gray-500">2.5 GB Terkirim • 5.1 GB Diterima</p>
+                            </div>
+                        </div>
+                        <a href="#" class="p-4 flex items-center space-x-4 text-red-600 hover:bg-gray-50"><div class="text-red-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M5 9l4 4-4 4M19 15l-4-4 4-4"></path></svg></div><span class="font-medium">Atur Ulang Statistik</span></a>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Bottom Navigation Bar -->
+        <nav class="flex-shrink-0 bg-white border-t border-gray-200 z-10">
+            <div class="flex justify-around items-center h-16">
+                <a href="../../chat/chat.html" class="nav-link flex flex-col items-center justify-center w-full text-gray-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg><span class="text-xs font-semibold">Obrolan</span></a>
+                <a href="../../rencana/plan.html" class="nav-link flex flex-col items-center justify-center w-full text-gray-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><span class="text-xs font-medium">Rencana</span></a>
+                <a href="../../dompet/wallet.html" class="nav-link flex flex-col items-center justify-center w-full text-gray-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg><span class="text-xs font-medium">Dompet</span></a>
+                <a href="../profile.html" class="nav-link flex flex-col items-center justify-center w-full text-indigo-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg><span class="text-xs font-medium">Saya</span></a></div>
+            </div>
+        </nav>
+    </div>
+
+</body>
+</html>
